@@ -10,7 +10,7 @@
 , libdrm
 , libgcrypt
 , libkrb5
-, mesa # for libgbm
+, mesa
 , nss
 , xorg
 , systemd
@@ -94,13 +94,10 @@ stdenv.mkDerivation {
     )
   '';
 
-  passthru.updateScript = ./update.sh;
-
   meta = with lib; {
     homepage = "https://im.qq.com/linuxqq/";
     description = "Messaging app";
     platforms = [ "x86_64-linux" "aarch64-linux" ];
-    #license = licenses.unfree;
     sourceProvenance = with sourceTypes; [ binaryNativeCode ];
     maintainers = with lib.maintainers; [ fee1-dead ];
   };
