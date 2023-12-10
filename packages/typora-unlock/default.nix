@@ -24,10 +24,10 @@
 
 let
   pname = "typora";
-  version = "1.7.4";
+  version = "1.7.6";
   src = fetchurl {
     url = "https://download.typora.io/linux/typora_${version}_amd64.deb";
-    hash = "sha256-ugBRijuXh4YHQeoPxGx0OrmsaoK7kAKKCKRNrvi63tc=";
+    hash = "sha256-o91elUN8sFlzVfIQj29amsiUdSBjZc51tLCO+Qfar6c=";
   };
   fuck_src = fetchurl {
     url = "https://github.com/networm6/resources/archive/refs/heads/master.zip";
@@ -53,11 +53,17 @@ let
       echo unzipped
       mv resources-master/node_inject usr/share/typora/node_inject
       chmod a+x usr/share/typora/node_inject
-      ./usr/share/typora/node_inject
+      current_dir=$(pwd)
+      cd ./usr/share/typora/ && ./node_inject
+      cd "$current_dir"
+      
+      sed -i 's/感谢您的支持/仅供学习用途，侵删/' usr/share/typora/resources/locales/zh-Hans.lproj/Welcome.json
+      echo statement
       
       mv usr/share $out
       echo moved      
       ln -s $out/share/typora/Typora $out/bin/Typora
+
       runHook postInstall
     '';
   };
@@ -122,6 +128,7 @@ in stdenv.mkDerivation {
   meta = with lib; {
     description = "A markdown editor, a markdown reader";
     homepage = "https://typora.io/";
+#    license = licenses.unfree;
     maintainers = with maintainers; [ npulidomateo ];
     platforms = [ "x86_64-linux" ];
     mainProgram = "typora";
