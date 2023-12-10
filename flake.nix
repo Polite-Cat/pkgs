@@ -77,6 +77,6 @@
       in rec {
         pkgs-unfree = intree-packages;
       }
-    )
+    );
 }
 
