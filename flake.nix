@@ -76,6 +76,7 @@
         intree-packages = filterBySystem system (mapRecurseIntoAttrs (makeUnfreePkgScope pkgs));
       in rec {
         pkgs-unfree = intree-packages;
-      };
-    };
+      }
+    )
 }
+
