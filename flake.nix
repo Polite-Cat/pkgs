@@ -11,6 +11,7 @@
     let
       # 默认发行版
       defaultSystem = "x86_64-linux";
+      
       # 递归当前目录下的所有目录，获取其中的default.nix文件
       listNixFilesRecursive = dir:
         flatten (mapAttrsToList (name: type:
@@ -24,6 +25,7 @@
             path
           else
             [ ]) (readDir dir));
+            
       # 根据default.nix中meta的platforms过滤发行系统
       filterBySystem = system: pkgs:
         filterAttrsRecursive (_: p:
@@ -31,6 +33,7 @@
             elem system p.meta.platforms
           else
             system == defaultSystem)) pkgs;
+            
       # 获取某个目录下的所有软件包
       getPackages = f: dir:
         let
@@ -48,13 +51,16 @@
         in foldl (set: target:
           recursiveUpdate set (setAttrByPath (getAttrPath target) (f target)))
         { } (listNixFilesRecursive dir);
-      # 获取pkgs-unfree下的软件包
-      makeUnfreePkgSet = f: getPackages f ./pkgs-unfree;
+        
+      # 获取packages下的软件包
+      makeUnfreePkgSet = f: getPackages f ./packages;
+      
       # 为每个软件包都创建一个scope,并执行callPackage
       makeUnfreePkgScope = pkgs:
         makeScope pkgs.newScope (self:
           (makeUnfreePkgSet
             (n: self.callPackage n { } // { __definition_entry = n; })));
+            
       # 把scope转为attrs
       mapRecurseIntoAttrs' = key: s:
         if any (k: k == key) (attrNames s) then
@@ -73,6 +79,7 @@
           system = system_i;
           config.allowUnfree = true;
         });
+        
         # 把polite-cat的pkgs和nixpkgs合并
         intree-packages = filterBySystem system_i (mapRecurseIntoAttrs (makeUnfreePkgScope pkgs));
       in rec {
