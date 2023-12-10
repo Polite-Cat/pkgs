@@ -75,7 +75,7 @@
         # 把polite-cat的pkgs和nixpkgs合并
         intree-packages = filterBySystem system (mapRecurseIntoAttrs (makeUnfreePkgScope pkgs));
       in rec {
-        pkgs-unfree = intree-packages;
+        legacyPackages = intree-packages;
       }
     );
 }
