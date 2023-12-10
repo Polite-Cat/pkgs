@@ -70,6 +70,7 @@
       let
         pkgs = (import nixpkgs {
           inherit system_i;
+          system = system_i;
           config.allowUnfree = true;
         });
         # 把polite-cat的pkgs和nixpkgs合并
