@@ -8,10 +8,10 @@
 
 stdenv.mkDerivation rec {
   pname = "bilibili";
-  version = "1.12.5.3101";
+  version = "1.13.0.3194";
   src = fetchurl {
     url = "https://github.com/msojocs/bilibili-linux/releases/download/continuous/io.github.msojocs.bilibili_${version}-continuous_amd64.deb";
-    sha256 = "sha256-rr1SVj+x3+dLWLp+wNy4cQv6ZjFNjTO9eOsRFgbQBpk=";
+    sha256 = "sha256-Fs0DgPN6B/SWdY7doYc1vyUIQMHczb48fvv1p9ztDL8=";
   };
 
   # 解压 DEB 包
